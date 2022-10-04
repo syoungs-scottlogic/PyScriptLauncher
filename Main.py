@@ -7,6 +7,12 @@
 """
     Current command to get JSON data 
     aws ec2 describe-instances --profile sl --query Reservations[*].Instances[*]
+    
+    Additional filtering to list InstanceIds
+    aws ec2 describe-instances --profile sl --filters 'Name=tag:Name,Values=*' --output json  --query Reservations[*].Instances[*].InstanceId
+    
+    # Show private IP, InstanceId and Name(tag)
+    aws ec2 describe-instances --profile sl --filters "Name=tag:Name,Values=*" --output json --query 'Reservations[*].Instances[*].[PrivateIpAddress,InstanceId,Tags[?Key==`Name`].Value]'
 """
     
     #######################
