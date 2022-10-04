@@ -1,10 +1,26 @@
+# Created on Windows using Python3.
+    # required WxPython: py -m pip install wxPython
+    # AWS SDK for Python (boto3): py -m pip install boto3
+    
+    
+    ######## NOTES #########
+"""
+    Current command to get JSON data 
+    aws ec2 describe-instances --profile sl --query Reservations[*].Instances[*]
+"""
+    
+    #######################
+
+from urllib import response
+from warnings import filters
 import wx
 import subprocess
+import boto3
+
+# If default profile is not specified in ~\.aws\credentials, your preferred profile will need to be entered here.
+boto3.setup_default_session(profile_name='sl')
 
 class HelloFrame(wx.Frame):
-    """
-    A Frame that says Hello World
-    """
 
     def __init__(self, *args, **kw):
         # ensure the parent's __init__ is called
@@ -29,8 +45,18 @@ class HelloFrame(wx.Frame):
 
     def OnClicked(self, event):
        # Run PowerShell script to get EC2 instances. 
-       result = subprocess.run([r'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', r'C:\wxlib\pstest.ps1'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-       print(result.stdout.decode('utf-8'))
+       #result = subprocess.run([r'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', r'C:\wxlib\pstest.ps1'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+       #print(result.stdout.decode('utf-8'))
+       
+       ec2 = boto3.client('ec2')
+       response = ec2.describe_instances(
+           Filters=[{
+               'Name': 'tag:owner',
+                'Values': ['syoungs']
+           }]
+       )
+       
+       print(response)
        
 
 if __name__ == '__main__':
