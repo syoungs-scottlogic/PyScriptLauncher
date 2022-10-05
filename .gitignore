@@ -1,4 +1,0 @@
-# exclude everything in data folder 
-/data/*
-#but keep .gitkeep (cant be empty to go to github)
-/!data/.gitkeep
