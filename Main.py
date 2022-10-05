@@ -12,7 +12,7 @@
     aws ec2 describe-instances --profile sl --filters 'Name=tag:Name,Values=*' --output json  --query Reservations[*].Instances[*].InstanceId
     
     # Show private IP, InstanceId and Name(tag)
-    aws ec2 describe-instances --profile sl --filters "Name=tag:Name,Values=*" --output json --query 'Reservations[*].Instances[*].[PrivateIpAddress,InstanceId,Tags[?Key==`Name`].Value]'
+    #aws ec2 describe-instances --profile sl --query 'Reservations[*].Instances[*].[InstanceId, PrivateIpAddress, Tags[?Key==`Name`].Value | [0]]' --output text
 """
     
     #######################

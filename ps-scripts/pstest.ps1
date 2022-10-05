@@ -1,7 +1,9 @@
-$runCheck = aws ec2 describe-instances --filters "Name=tag:owner,Values=syoungs" --profile sl
-$data = $runCheck | ConvertFrom-Json
-$instances = @()
+$newItems = New-Object System.Collections.ArrayList
+$hashTable = @{}
 
-Write-Host ($instances)
+$runCheck = aws ec2 describe-instances --profile sl --query 'Reservations[*].Instances[*].[InstanceId, Tags[?Key==`Name`].Value | [0]]' --output text
 
+$runCheck | foreach{$newItems = $_.split(); $hashTable.Add("$($newItems[0])", "$($newItems[1])") }
+
+return $hashTable
 #return aws describe-instance-status --profile sl
