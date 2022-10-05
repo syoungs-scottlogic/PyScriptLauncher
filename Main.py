@@ -20,8 +20,10 @@
 from urllib import response
 from warnings import filters
 import wx
-import subprocess
+import subprocess, sys
 import boto3
+import jmespath
+import awscli
 
 # If default profile is not specified in ~\.aws\credentials, your preferred profile will need to be entered here.
 boto3.setup_default_session(profile_name='sl')
@@ -51,19 +53,27 @@ class HelloFrame(wx.Frame):
 
     def OnClicked(self, event):
        # Run PowerShell script to get EC2 instances. 
-       #result = subprocess.run([r'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', r'C:\wxlib\pstest.ps1'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-       #print(result.stdout.decode('utf-8'))
+       result = subprocess.run([r'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', r'.\\ps-scripts\\pstest.ps1'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+       #print(type(result.stdout.decode('utf-8')))
        
-       ec2 = boto3.client('ec2')
-       response = ec2.describe_instances(
-           Filters=[{
-               'Name': 'tag:owner',
-                'Values': ['syoungs']
-           }]
-       )
        
-       print(response)
        
+
+       #p = subprocess.Popen(["powershell.exe", ".\\ps-scripts\\pstest.ps1"], stdout=sys.stdout)
+       #print(type(p))
+       #q = p.communicate()
+       #print(q)
+       
+       # ec2 = boto3.client('ec2')
+       #response = ec2.describe_instances(
+       #    Filters=[{
+       #        'Name': 'tag:owner',
+       #         'Values': ['syoungs']
+       #    }]
+       #)
+       
+       #print(response)
+       #print(type(response))
 
 if __name__ == '__main__':
     # When this module is run (not imported) then create the app, the
